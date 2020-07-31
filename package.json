@@ -1,11 +1,16 @@
 {
   "name": "leave-action-app",
   "version": "1.0.0",
-  "description": "Leave app business validation errors",
+  "description": "Leave app business validation validations and errors",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "docker:build" : "docker build -t $npm_package_config_repository:$npm_package_config_tag . "
+  },
+  "config" : {
+    "repository" : "leave-action-app/experimental",
+    "tag" : "0.1"
   },
   "keywords": [],
   "author": "Tanmay Patil",
