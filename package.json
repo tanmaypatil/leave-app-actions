@@ -12,7 +12,11 @@
     "repository" : "leave-action-app/experimental",
     "tag" : "0.1"
   },
-  "keywords": [],
+  "keywords": [
+    "Leave application",
+    "Hasura",
+    "SASS"
+  ],
   "author": "Tanmay Patil",
   "license": "ISC",
   "dependencies": {
