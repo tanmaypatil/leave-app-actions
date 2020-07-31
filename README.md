@@ -8,6 +8,7 @@ However in order for each microservice  to be dockerised , have seperated them i
 
 ## set up 
    Requires following enviornment variable : GRAPHQL_HOST
+   
    GRAPHQL_HOST : http://host.docker.internal:8080/v1/graphql 
    Action will receive the input payload and call the graphql queries to perform operations.
 
