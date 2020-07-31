@@ -6,6 +6,9 @@ async function work_days(from_date, to_date, user_id) {
     let working_days_obj = {};
     // get entity and location information
     let user_info = await getEntityAndLocation(user_id);
+    if (user_info.error && user_info.error.code != "") {
+        return user_info;
+    }
     /* check company holidays ,if they are between 
        from date , to date */
     let holiday_cnt = await check_holidays(from_date, to_date, user_info);
@@ -43,15 +46,24 @@ function getEntityAndLocation(user_id) {
         };
         try {
             let jsonResponse = await util.executeGraphQLQuery(query, variables);
-            // read entity id and location code and pass back
-            let finalResponse = {
-                entity_id : jsonResponse.data.leave_app_employee[0].entity_id,
-                emp_location : jsonResponse.data.leave_app_employee[0].entity_location.code
+            let finalResponse = {};
+            // if response is empty , then user id itself is invalid 
+            if (jsonResponse.data && jsonResponse.data.leave_app_employee.length == 0) {
+                finalResponse.error = {
+                    code: 'E00005',
+                    message: 'Invalid user id'
+                };
+                resolve(finalResponse);
             }
-            console.log("getEntityAndLocation "+ finalResponse);
-            resolve(finalResponse);
+            else {
+                // read entity id and location code and pass back
+                finalResponse.entity_id = jsonResponse.data.leave_app_employee[0].entity_id;
+                finalResponse.emp_location = jsonResponse.data.leave_app_employee[0].entity_location.code;
+                console.log("getEntityAndLocation " + finalResponse);
+                resolve(finalResponse);
+            }
         }
-        catch(error) {
+        catch (error) {
             console.log(error);
             reject(error);
         }

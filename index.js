@@ -35,8 +35,8 @@ app.post('/api/leaveApply', jsonParser, async function (req, res) {
         }
         else {
             // port to success message format .
-            let finalObj = { };
-            finalObj.message = retObj.message; 
+            let finalObj = {};
+            finalObj.message = retObj.message;
             res.json(finalObj);
         }
     }
@@ -50,10 +50,19 @@ app.post('/api/leaveApply', jsonParser, async function (req, res) {
 app.post('/api/getWorkingDays', jsonParser, async function (req, res) {
     try {
         let resultJson = await workingday_query(req, res);
-        // Action api , expects leaveDays as property.
-        resultJson.leaveDays = resultJson.leaves_requested;
-        delete resultJson.leaves_requested;
-        res.json(resultJson);
+        console.log("post  workingday_query " + JSON.stringify(resultJson));
+
+        if (resultJson.error && resultJson.error.code != "") {
+            res.status(422).json(resultJson.error);
+        }
+        else {
+            // Action api, expects leaveDays as property in case of success
+            resultJson.leaveDays = resultJson.leaves_requested;
+            delete resultJson.leaves_requested;
+            if (resultJson.error) delete resultJson.error;
+            console.log("before return getWorkingDays " + JSON.stringify(resultJson));
+            res.json(resultJson);
+        }
     }
     catch (error) {
         res.status(500).json(error);
