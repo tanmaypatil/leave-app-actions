@@ -86,7 +86,8 @@ function check_holidays(from_date, to_date, user_info) {
 
         try {
             let jsonResponse = await util.executeGraphQLQuery(query, variables);
-            holidays = jsonResponse.data.leave_app_holidays;
+            let holidays = jsonResponse.data.leave_app_holidays;
+            let count = 0 ;
             console.log("Holidays : ");
             console.dir(holidays
                 , { depths: null, colors: true });
